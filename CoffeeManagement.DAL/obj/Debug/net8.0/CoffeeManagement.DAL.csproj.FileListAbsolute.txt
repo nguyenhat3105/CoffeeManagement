@@ -1,0 +1,15 @@
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\bin\Debug\net8.0\CoffeeManagement.DAL.deps.json
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\bin\Debug\net8.0\CoffeeManagement.DAL.runtimeconfig.json
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\bin\Debug\net8.0\CoffeeManagement.DAL.dll
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\bin\Debug\net8.0\CoffeeManagement.DAL.pdb
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.csproj.AssemblyReference.cache
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.AssemblyInfoInputs.cache
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.AssemblyInfo.cs
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.csproj.CoreCompileInputs.cache
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.sourcelink.json
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.dll
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\refint\CoffeeManagement.DAL.dll
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.pdb
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\CoffeeManagement.DAL.genruntimeconfig.cache
+C:\Users\CONG NHAT\OneDrive\Desktop\C#\Session3-OOP\CoffeeManagement\CoffeeManagement.DAL\obj\Debug\net8.0\ref\CoffeeManagement.DAL.dll

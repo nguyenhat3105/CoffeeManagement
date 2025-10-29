@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="CoffeeManagement.AdminDashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="#FAFAFA"
+             MinWidth="900" MinHeight="600">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="📊 Bảng điều khiển quản trị" FontSize="24" FontWeight="Bold" />
+
+        <!-- Thống kê nhanh -->
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,20,0,0" HorizontalAlignment="Center" >
+            <Border Background="#FFFFFF" Padding="20" CornerRadius="10" Width="200" Height="100" >
+                <StackPanel>
+                    <TextBlock Text="Tổng đơn hàng" FontSize="14" Foreground="Gray" />
+                    <TextBlock x:Name="TxtTotalOrders" FontSize="22" FontWeight="Bold" Text="0"/>
+                </StackPanel>
+            </Border>
+            <Border Background="#FFFFFF" Padding="20" CornerRadius="10" Width="200" Height="100" >
+                <StackPanel>
+                    <TextBlock Text="Tổng doanh thu" FontSize="14" Foreground="Gray" />
+                    <TextBlock x:Name="TxtTotalRevenue" FontSize="22" FontWeight="Bold" Text="0₫"/>
+                </StackPanel>
+            </Border>
+            <Border Background="#FFFFFF" Padding="20" CornerRadius="10" Width="200" Height="100" >
+                <StackPanel>
+                    <TextBlock Text="Tổng món bán ra" FontSize="14" Foreground="Gray" />
+                    <TextBlock x:Name="TxtTotalItems" FontSize="22" FontWeight="Bold" Text="0"/>
+                </StackPanel>
+            </Border>
+            <Border Background="#FFFFFF" Padding="20" CornerRadius="10" Width="200" Height="100" >
+                <StackPanel>
+                    <TextBlock Text="Giờ cao điểm" FontSize="14" Foreground="Gray" />
+                    <TextBlock x:Name="TxtPeakHour" FontSize="22" FontWeight="Bold" Text="--:--"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+
+        <!-- Biểu đồ doanh thu -->
+        <Border Grid.Row="2" Background="White" CornerRadius="10" Margin="0,20,0,0" Padding="10">
+            <Grid>
+                <TextBlock Text="📅 Doanh thu theo ngày" FontSize="18" FontWeight="Bold" Margin="10,0,0,10"/>
+                <Canvas x:Name="RevenueCanvas" Margin="0,40,0,0" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

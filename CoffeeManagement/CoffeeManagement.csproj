@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="images\cf_suada.jpg" />
+    <None Remove="images\coffee_shop.jpg" />
+    <None Remove="images\latte.jpg" />
+    <None Remove="images\milk_tea.jpg" />
+    <None Remove="images\tra_dao_cam_sa.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoffeeManagement.BLL\CoffeeManagement.BLL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="images\cf_suada.jpg" />
+    <Resource Include="images\coffee_shop.jpg" />
+    <Resource Include="images\latte.jpg" />
+    <Resource Include="images\milk_tea.jpg" />
+    <Resource Include="images\tra_dao_cam_sa.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="CoffeeManagement.MenuUI"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="#FAFAFA">
+
+    <Grid>
+        <!-- DockPanel chính -->
+        <DockPanel>
+            <!-- Header -->
+            <TextBlock Text="Menu"
+                       DockPanel.Dock="Top"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Margin="20,10"
+                       Foreground="#333"/>
+
+            <!-- Scroll viewer chứa danh sách món -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <WrapPanel x:Name="WrapMenuItems"
+                           Margin="20"
+                           Orientation="Horizontal"
+                           ItemWidth="300"
+                           ItemHeight="350"/>
+            </ScrollViewer>
+        </DockPanel>
+
+        <!-- Biểu tượng giỏ hàng -->
+        <Button x:Name="BtnCart"
+                Width="60" Height="60"
+                Background="#007ACC"
+                Foreground="White"
+                FontSize="26"
+                Content="🛒"
+                BorderThickness="0"
+                Cursor="Hand"
+                Click="BtnCart_Click"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="20"
+                ToolTip="Xem giỏ hàng">
+            <Button.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
+            </Button.Effect>
+        </Button>
+
+        <!-- Số lượng món trong giỏ -->
+        <Border x:Name="CartBadge"
+                Background="Red"
+                CornerRadius="10"
+                Width="20"
+                Height="20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="10,0,15,70"
+                Visibility="Collapsed">
+            <TextBlock x:Name="TxtCartCount"
+                       Text="0"
+                       Foreground="White"
+                       FontWeight="Bold"
+                       FontSize="12"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+        </Border>
+    </Grid>
+</UserControl>
