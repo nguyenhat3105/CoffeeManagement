@@ -14,6 +14,6 @@ namespace CoffeeManagement.DAL.Repositories
         void Update(MenuItem menuItem);
         MenuItem? GetById(int id);
         IEnumerable<MenuItem> GetAll();
-        
+        IEnumerable<Category> GetAllCategories();
     }
 }

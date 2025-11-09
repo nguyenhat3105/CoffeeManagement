@@ -39,5 +39,9 @@ namespace CoffeeManagement.DAL.Repositories
         {
             MenuItemsDAO.UpdateMenuItems(menuItem);
         }
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return MenuItemsDAO.GetAllCategories();
+        }
     }
 }

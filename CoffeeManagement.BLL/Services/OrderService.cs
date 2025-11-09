@@ -15,9 +15,9 @@ namespace CoffeeManagement.BLL.Services
         {
             _orderRepository = orderRepository;
         }
-        public Order CreateOrder(Order order, List<OrderItem> orderItems)
+        public void CreateOrder(Order order, List<OrderItem> orderItems)
         {
-            return _orderRepository.CreateOrder(order, orderItems);
+            _orderRepository.CreateOrder(order, orderItems);
         }
         public bool DeleteOrder(int orderId)
         {
@@ -46,6 +46,10 @@ namespace CoffeeManagement.BLL.Services
         public void UpdateOrderStatus(int orderId, byte status)
         {
             _orderRepository.UpdateOrderStatus(orderId, status);
+        }
+        public void UpdateOrderStaff(int orderId, int staffId)
+        {
+            _orderRepository.UpdateOrderStaff(orderId, staffId);
         }
     }
 }

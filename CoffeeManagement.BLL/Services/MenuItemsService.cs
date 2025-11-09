@@ -41,5 +41,9 @@ namespace CoffeeManagement.BLL.Services
         {
             menuItemsRepo.Update(menuItem);
         }
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return menuItemsRepo.GetAllCategories();
+        }
     }
 }

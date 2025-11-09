@@ -9,7 +9,7 @@ namespace CoffeeManagement.DAL.DAO
 {
     public interface IOrderDAO
     {
-        Order CreateOrder(Order order, List<OrderItem> orderItems);
+        void CreateOrder(Order order, List<OrderItem> orderItems);
         Order? GetOrderById(int orderId);
         List<Order> GetAllOrders();
         void UpdateOrderStatus(int orderId, byte status);
@@ -17,6 +17,6 @@ namespace CoffeeManagement.DAL.DAO
         bool DeleteOrder(int orderId);
         Order? GetOrderByStaffId(int staffId);
         Order? GetOrderByCustomerId(int customerId);
-
+        void UpdateOrderStaff(int orderId, int staffId);
     }
 }

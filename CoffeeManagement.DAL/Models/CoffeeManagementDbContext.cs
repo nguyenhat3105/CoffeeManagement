@@ -88,6 +88,7 @@ public partial class CoffeeManagementDbContext : DbContext
 
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
             entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Note).HasMaxLength(500);
 
             entity.HasOne(d => d.Customer).WithMany(p => p.OrderCustomers)
                 .HasForeignKey(d => d.CustomerId)

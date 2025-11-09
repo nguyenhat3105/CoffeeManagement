@@ -2,6 +2,7 @@
 using CoffeeManagement.DAL.DAO;
 using CoffeeManagement.DAL.Models;
 using CoffeeManagement.DAL.Repositories;
+using CoffeeManagement.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,8 +54,23 @@ namespace CoffeeManagement
                 var res = MessageBox.Show($"Mark order #{order.Id} complete and paid?", "Confirm", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (res == MessageBoxResult.Yes)
                 {
-                    _orderService.UpdateOrderStatus(order.Id, 1); // 1 = completed
+                    // Lấy ID nhân viên đang đăng nhập từ AppSession
+                    var currentStaffId = AppSession.CurrentUser?.Id; //
+                    if (currentStaffId == null)
+                    {
+                        MessageBox.Show("Lỗi: Không thể xác định nhân viên. Vui lòng đăng nhập lại.", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // SỬA LỖI LOGIC: 3 = Completed (theo script DB), 1 chỉ là "Confirmed"
+                    _orderService.UpdateOrderStatus(order.Id, 3); // 3 = Completed
+
+                    // Cập nhật trạng thái thanh toán
                     _orderService.UpdateOrderPaymentStatus(order.Id, true, DateTime.Now);
+
+                    // THÊM MỚI: Gán nhân viên (đang đăng nhập) này cho đơn hàng
+                    _orderService.UpdateOrderStaff(order.Id, currentStaffId.Value); //
+
                     MessageBox.Show($"Order #{order.Id} updated.", "OK", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadProcessingOrders();
                 }

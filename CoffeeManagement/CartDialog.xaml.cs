@@ -111,9 +111,9 @@ namespace CoffeeManagement
                 // var createdOrder = dao.CreateOrder(order, orderItems);
 
                 // Gọi service để lưu
-                var created = service.CreateOrder(order, orderItems); // hoặc CreateOrder trả về Order
+                service.CreateOrder(order, orderItems); // hoặc CreateOrder trả về Order
 
-                MessageBox.Show($"Checkout thành công. OrderId = {created.Id}", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Checkout thành công. OrderId = ", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 DialogResult = true;
                 Close();

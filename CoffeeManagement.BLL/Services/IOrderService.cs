@@ -9,7 +9,7 @@ namespace CoffeeManagement.BLL.Services
 {
     public interface IOrderService
     {
-        Order CreateOrder(Order order, List<OrderItem> orderItems);
+        void CreateOrder(Order order, List<OrderItem> orderItems);
         Order? GetOrderById(int orderId);
         List<Order> GetAllOrders();
         void UpdateOrderStatus(int orderId, byte status);
@@ -17,6 +17,6 @@ namespace CoffeeManagement.BLL.Services
         bool DeleteOrder(int orderId);
         Order? GetOrderByStaffId(int staffId);
         Order? GetOrderByCustomerId(int customerId);
-
+        void UpdateOrderStaff(int staffId, int orderId);
     }
 }

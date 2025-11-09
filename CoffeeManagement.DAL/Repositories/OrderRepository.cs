@@ -16,9 +16,9 @@ namespace CoffeeManagement.DAL.Repositories
             _orderDAO = orderDAO;
         }
 
-        public Order CreateOrder(Order order, List<OrderItem> orderItems)
+        public void CreateOrder(Order order, List<OrderItem> orderItems)
         {
-            return _orderDAO.CreateOrder(order, orderItems);
+            _orderDAO.CreateOrder(order, orderItems);
         }
         public bool DeleteOrder(int orderId)
         {
@@ -48,6 +48,10 @@ namespace CoffeeManagement.DAL.Repositories
         public void UpdateOrderStatus(int orderId, byte status)
         {
             _orderDAO.UpdateOrderStatus(orderId, status);
+        }
+        public void UpdateOrderStaff(int orderId, int staffId)
+        {
+            _orderDAO.UpdateOrderStaff(orderId, staffId);
         }
     }
 }

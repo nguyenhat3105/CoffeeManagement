@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NnLFU81OtgQ=",
+  "dgSpecHash": "rfJ4nBeqcnI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\CONG NHAT\\OneDrive\\Desktop\\C#\\Session3-OOP\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
+  "projectFilePath": "C:\\Users\\CONG NHAT\\Downloads\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\CONG NHAT\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\CONG NHAT\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
@@ -96,9 +96,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "Package 'LiveCharts 0.9.7' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0-windows7.0'. This package may not be fully compatible with your project.",
-      "projectPath": "C:\\Users\\CONG NHAT\\OneDrive\\Desktop\\C#\\Session3-OOP\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
+      "projectPath": "C:\\Users\\CONG NHAT\\Downloads\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\CONG NHAT\\OneDrive\\Desktop\\C#\\Session3-OOP\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
+      "filePath": "C:\\Users\\CONG NHAT\\Downloads\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
       "libraryId": "LiveCharts",
       "targetGraphs": [
         "net8.0-windows7.0"
@@ -108,9 +108,9 @@
       "code": "NU1701",
       "level": "Warning",
       "message": "Package 'LiveCharts.Wpf 0.9.7' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net8.0-windows7.0'. This package may not be fully compatible with your project.",
-      "projectPath": "C:\\Users\\CONG NHAT\\OneDrive\\Desktop\\C#\\Session3-OOP\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
+      "projectPath": "C:\\Users\\CONG NHAT\\Downloads\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\Users\\CONG NHAT\\OneDrive\\Desktop\\C#\\Session3-OOP\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
+      "filePath": "C:\\Users\\CONG NHAT\\Downloads\\CoffeeManagement\\CoffeeManagement\\CoffeeManagement.csproj",
       "libraryId": "LiveCharts.Wpf",
       "targetGraphs": [
         "net8.0-windows7.0"

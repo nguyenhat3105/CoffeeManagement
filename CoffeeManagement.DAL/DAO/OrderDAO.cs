@@ -16,25 +16,67 @@ namespace CoffeeManagement.DAL.DAO
         {
             _context = context;
         }
-        public Order CreateOrder(Order order, List<OrderItem> orderItems)
+        // Example: CoffeeManagement.DAL.DAO.OrderDAO.CreateOrder
+        public void CreateOrder(Order order, List<OrderItem> orderItems)
         {
             try
             {
-                _context.Orders.Add(order);
-                _context.SaveChanges();
-                foreach (var item in orderItems)
+                using (var ctx = new CoffeeManagementDbContext()) // create new context inside DAO
                 {
-                    item.OrderId = order.Id;
-                    _context.OrderItems.Add(item);
+                    // Build a new Order entity (do not use entities tracked by caller)
+                    var newOrder = new Order
+                    {
+                        CustomerId = order.CustomerId,
+                        StaffId = order.StaffId,
+                        CreatedAt = order.CreatedAt,
+                        Status = order.Status,
+                        IsPaid = order.IsPaid,
+                        Note = order.Note,
+                        TotalAmount = order.TotalAmount,
+                        OrderItems = new List<OrderItem>()
+                    };
+
+                    foreach (var oi in orderItems)
+                    {
+                        // Validate MenuItemId exists (optional, but helpful)
+                        var menuExists = ctx.MenuItems.Any(m => m.Id == oi.MenuItemId);
+                        if (!menuExists)
+                            throw new InvalidOperationException($"MenuItem with Id {oi.MenuItemId} does not exist.");
+
+                        var newOi = new OrderItem
+                        {
+                            MenuItemId = oi.MenuItemId,
+                            Quantity = oi.Quantity,
+                            UnitPrice = oi.UnitPrice
+                        };
+                        newOrder.OrderItems.Add(newOi);
+                    }
+
+                    ctx.Orders.Add(newOrder);
+                    ctx.SaveChanges();
                 }
-                _context.SaveChanges();
-                return order;
+            }
+            catch (DbUpdateException dbEx)
+            {
+                // Include inner details to help debug
+                var inner = dbEx.InnerException;
+                var msg = new System.Text.StringBuilder();
+                msg.AppendLine("DbUpdateException when creating order: " + dbEx.Message);
+                while (inner != null)
+                {
+                    msg.AppendLine("  Inner: " + inner.Message);
+                    inner = inner.InnerException;
+                }
+                System.Diagnostics.Debug.WriteLine(msg.ToString());
+                throw new Exception("Error when creating order: " + dbEx.Message + ". See Output for details.", dbEx);
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error when creating order: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine("CreateOrder failed: " + ex);
+                throw;
             }
         }
+
 
         public bool DeleteOrder(int orderId)
         {
@@ -111,5 +153,15 @@ namespace CoffeeManagement.DAL.DAO
                 _context.SaveChanges();
             }
         }
+        public void UpdateOrderStaff(int orderId, int staffId)
+        {
+            var order = _context.Orders.Find(orderId);
+            if (order != null)
+            {
+                order.StaffId = staffId;
+                _context.SaveChanges();
+            }
+        }
+
     }
 }

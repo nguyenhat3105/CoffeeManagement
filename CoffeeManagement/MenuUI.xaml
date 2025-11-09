@@ -1,69 +1,376 @@
 ﻿<UserControl x:Class="CoffeeManagement.MenuUI"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="900"
-             Background="#FAFAFA">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement"
+             xmlns:helpers="clr-namespace:CoffeeManagement.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1100">
+
+    <UserControl.Resources>
+        <!-- Icon Font Family (Giả định đã được tích hợp) -->
+        <FontFamily x:Key="FontAwesome">/Fonts/#Font Awesome 6 Free Solid</FontFamily>
+        
+        <!-- Màu sắc chủ đạo (Nền tối, điểm nhấn Vàng/Đồng) -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#D4AF37"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#F0F0F0"/>
+        <SolidColorBrush x:Key="LightTextColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="DarkTextColor" Color="#1C1C1C"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#E0E0E0"/>
+        <SolidColorBrush x:Key="ButtonHoverColor" Color="#E6B93F"/>
+        <SolidColorBrush x:Key="CartBackground" Color="#FDFDFD"/>
+        <SolidColorBrush x:Key="HeaderSeparatorColor" Color="#F0F0F0"/>
+
+        <!-- Style cho Category Button (Thanh lọc ngang) -->
+        <Style x:Key="CategoryButtonStyle" TargetType="RadioButton">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+            <Setter Property="GroupName" Value="CategoryFilter"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="border"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="15">
+                            <TextBlock Text="{TemplateBinding Content}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Foreground="{TemplateBinding Foreground}"
+                   FontWeight="SemiBold"
+                   Padding="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource SecondaryColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="Foreground" Value="{StaticResource DarkTextColor}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Style cho TextBox (Đảm bảo chỉ có các thuộc tính TextBox hỗ trợ) -->
+        <Style TargetType="TextBox" x:Key="BaseTextBoxStyle">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+
+
+        <!-- Template cho mỗi Item trong Menu (Card sản phẩm) -->
+        <DataTemplate x:Key="MenuItemTemplate">
+            <Border Width="180" Height="240" Margin="15" 
+                    Background="{StaticResource LightTextColor}" CornerRadius="12"
+                    BorderBrush="{StaticResource BorderColor}" BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Color="#AAAAAA" Opacity="0.3" BlurRadius="10"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="140"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Hình ảnh món ăn -->
+                    <Border Grid.Row="0" CornerRadius="12,12,0,0" Background="#F0F0F0" ClipToBounds="True">
+                        <Image x:Name="ImgMenuItem"
+           Width="180" Height="140"
+           Stretch="UniformToFill"
+           Loaded="MenuItemImage_Loaded"
+           Tag="{Binding ImgUrl}" />
+                    </Border>
+
+                    <!-- Tên món ăn -->
+                    <TextBlock Grid.Row="1" Text="{Binding Name}" 
+                               HorizontalAlignment="Center" 
+                               Margin="5,8,5,0" 
+                               FontSize="15"
+                               FontWeight="Bold" 
+                               Foreground="{StaticResource DarkTextColor}" 
+                               TextWrapping="Wrap" TextAlignment="Center"/>
+
+                    <!-- Giá và nút Add -->
+                    <Grid Grid.Row="2" Margin="10,5,10,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding Price, StringFormat='{}{0:N0}đ'}" 
+                                   FontWeight="ExtraBold" 
+                                   FontSize="16"
+                                   Foreground="{StaticResource PrimaryColor}" 
+                                   VerticalAlignment="Center"/>
+
+                        <!-- Nút Add to Cart -->
+                        <Button Grid.Column="1" Content="+" 
+                                Click="BtnAddItem_Click"
+                                Tag="{Binding}"
+                                Width="35" Height="35"
+                                FontSize="18"
+                                Background="{StaticResource PrimaryColor}"
+                                Foreground="{StaticResource DarkTextColor}"
+                                BorderThickness="0" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+        <!-- Template cho Item trong Giỏ hàng -->
+        <DataTemplate x:Key="CartItemTemplate">
+            <Border BorderBrush="{StaticResource HeaderSeparatorColor}" BorderThickness="0,0,0,1" Padding="0,10" Margin="0,0,0,5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="35"/>
+                        <ColumnDefinition Width="35"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Tên món hàng -->
+                    <TextBlock Grid.Column="0" Text="{Binding Item.Name}" 
+                               FontWeight="SemiBold" 
+                               Foreground="{StaticResource DarkTextColor}"
+                               TextWrapping="Wrap" VerticalAlignment="Center"/>
+
+                    <!-- Số lượng hiển thị -->
+                    <TextBlock Grid.Column="1" Text="{Binding Quantity}"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource DarkTextColor}"/>
+
+                    <!-- Tổng tiền item -->
+                    <TextBlock Grid.Column="2" 
+                               Text="{Binding TotalPrice, StringFormat='{}{0:N0}đ'}" 
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryColor}"
+                               TextAlignment="Right"
+                               VerticalAlignment="Center" Margin="5,0"/>
+
+                    <!-- Nút Tăng/Giảm/Xóa -->
+                    <Button Grid.Column="3" Content="+" 
+                            Click="BtnIncreaseItem_Click"
+                            Tag="{Binding}"
+                            Width="25" Height="25" FontSize="14"
+                            Background="#D8D8D8"
+                            Foreground="{StaticResource DarkTextColor}"
+                            BorderThickness="0" Margin="5,0,0,0"/>
+
+                    <Button Grid.Column="4" Content="-" 
+                            Click="BtnDecreaseItem_Click"
+                            Tag="{Binding}"
+                            Width="25" Height="25" FontSize="14"
+                            Background="#FF5757"
+                            Foreground="{StaticResource DarkTextColor}"
+                            BorderThickness="0"  Margin="5,0,0,0"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
 
     <Grid>
-        <!-- DockPanel chính -->
-        <DockPanel>
-            <!-- Header -->
-            <TextBlock Text="Menu"
-                       DockPanel.Dock="Top"
-                       FontSize="28"
-                       FontWeight="Bold"
-                       Margin="20,10"
-                       Foreground="#333"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <!-- Menu chính (Lọc + Items) -->
+            <ColumnDefinition Width="320"/>
+            <!-- Giỏ hàng (Cart) -->
+        </Grid.ColumnDefinitions>
 
-            <!-- Scroll viewer chứa danh sách món -->
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <WrapPanel x:Name="WrapMenuItems"
-                           Margin="20"
-                           Orientation="Horizontal"
-                           ItemWidth="300"
-                           ItemHeight="350"/>
+        <!-- Cột 0: MENU CHÍNH (FILTERS VÀ ITEMS) -->
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Thanh tìm kiếm và lọc -->
+                <RowDefinition Height="*"/>
+                <!-- Danh sách Items -->
+            </Grid.RowDefinitions>
+
+            <!-- HEADER VÀ BỘ LỌC -->
+            <StackPanel Grid.Row="0" Margin="20,20,20,10">
+
+                <!-- Tiêu đề -->
+                <TextBlock Text="Thực đơn Quán cà phê" 
+                           FontSize="28" FontWeight="Bold" 
+                           Foreground="{StaticResource DarkTextColor}" 
+                           Margin="0,0,0,15"/>
+
+                <!-- Thanh tìm kiếm -->
+                <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="8" Background="#FFFFFF" Margin="0,0,0,15">
+                    <Grid Height="40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="40"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="" 
+                                   FontFamily="{StaticResource FontAwesome}" 
+                                   VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                   />
+                        <!-- SỬA LỖI: Bỏ Style không tồn tại, chỉ giữ các thuộc tính TextBox hỗ trợ -->
+                        <TextBox Grid.Column="1" x:Name="TxtSearch" 
+                                 TextChanged="TxtSearch_TextChanged"
+                                 Style="{StaticResource BaseTextBoxStyle}"
+                                 VerticalContentAlignment="Center"
+                                 Foreground="{StaticResource DarkTextColor}"
+                                 FontSize="14"
+                                 Padding="0,0,10,0"/>
+                    </Grid>
+                </Border>
+
+                <!-- Bộ lọc Category (Dạng chip/button) -->
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <StackPanel Orientation="Horizontal" x:Name="CategoryFilterPanel">
+                        <!-- Nút All (Tất cả) -->
+                        <RadioButton Content="Tất cả" 
+                                     IsChecked="True"
+                                     Click="CategoryFilter_Click"
+                                      Margin="0,0,8,0"/>
+                        <!-- Các RadioButton cho từng Category sẽ được thêm bằng Code-behind -->
+                    </StackPanel>
+                </ScrollViewer>
+
+            </StackPanel>
+
+            <!-- DANH SÁCH MENU ITEMS -->
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="10,0,0,20">
+                <ItemsControl x:Name="MenuItemsControl" ItemTemplate="{StaticResource MenuItemTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Margin="10"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
             </ScrollViewer>
-        </DockPanel>
+        </Grid>
 
-        <!-- Biểu tượng giỏ hàng -->
-        <Button x:Name="BtnCart"
-                Width="60" Height="60"
-                Background="#007ACC"
-                Foreground="White"
-                FontSize="26"
-                Content="🛒"
-                BorderThickness="0"
-                Cursor="Hand"
-                Click="BtnCart_Click"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="20"
-                ToolTip="Xem giỏ hàng">
-            <Button.Effect>
-                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3"/>
-            </Button.Effect>
-        </Button>
+        <!-- Cột 1: GIỎ HÀNG (CART) - Nền sáng tương phản -->
+        <Border Grid.Column="1" Background="{StaticResource CartBackground}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1,0,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <!-- Số lượng món trong giỏ -->
-        <Border x:Name="CartBadge"
-                Background="Red"
-                CornerRadius="10"
-                Width="20"
-                Height="20"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Margin="10,0,15,70"
-                Visibility="Collapsed">
-            <TextBlock x:Name="TxtCartCount"
-                       Text="0"
-                       Foreground="White"
-                       FontWeight="Bold"
+                <!-- Header Giỏ hàng -->
+                <TextBlock Grid.Row="0" Text="🛒 Giỏ hàng" 
+                           FontSize="22" FontWeight="Bold" 
+                           Foreground="{StaticResource DarkTextColor}" 
+                           Margin="20,25,20,15"/>
+
+                <!-- Danh sách Item trong Giỏ hàng -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="20,0">
+                    <ItemsControl x:Name="CartItemsControl" 
+                                  ItemTemplate="{StaticResource CartItemTemplate}"/>
+                </ScrollViewer>
+
+                <!-- Footer Giỏ hàng (Tổng tiền và Đặt hàng) -->
+                <StackPanel Grid.Row="2" Margin="20,15,20,25">
+
+                    <Border x:Name="StaffCustomerSearchPanel" 
+            Visibility="Collapsed"
+            Margin="0,0,0,15">
+
+                        <StackPanel>
+                            <TextBlock Text="Gán đơn hàng cho khách (SĐT/Username):"
+                       FontSize="14"
+                       FontWeight="Medium"
+                       Foreground="{StaticResource DarkTextColor}"
+                       Margin="0,0,0,5"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0" 
+                         x:Name="TxtCustomerSearch"
+                         Height="35"
+                         Padding="5"
+                         BorderBrush="{StaticResource BorderColor}"
+                         BorderThickness="1"
+                         VerticalContentAlignment="Center"
+                         FontSize="14"/>
+
+                                <Button Grid.Column="1" 
+                        x:Name="BtnFindCustomer"
+                        Click="BtnFindCustomer_Click"
+                        Content="Tìm"
+                        Width="50" Height="35"
+                        Margin="5,0,0,0"
+                        Background="{StaticResource PrimaryColor}"
+                        Foreground="{StaticResource DarkTextColor}"
+                        BorderThickness="0"/>
+                            </Grid>
+
+                            <TextBlock x:Name="TxtSelectedCustomerInfo"
+                       Text="Đang chọn: Khách lẻ"
                        FontSize="12"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                       FontStyle="Italic"
+                       
+                       Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <TextBlock Text="Ghi chú cho đơn hàng (tuỳ chọn):"
+                       FontSize="14"
+                       FontWeight="Medium"
+                       Foreground="{StaticResource DarkTextColor}"
+                       Margin="0,0,0,5"/>
+                    
+                    
+
+                    <TextBox x:Name="TxtOrderNote"
+                     Height="60"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Auto"
+                     Padding="5"
+                     BorderBrush="{StaticResource BorderColor}"
+                     BorderThickness="1"
+                     FontSize="14"/>
+                    
+                    
+                    
+                    <Grid Margin="0,15,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="TỔNG CỘNG" 
+                           FontSize="20" FontWeight="Bold" Foreground="{StaticResource DarkTextColor}"/>
+                        <TextBlock Grid.Column="1" x:Name="TxtCartTotal" 
+                           Text="0đ" FontSize="22" 
+                           FontWeight="ExtraBold" 
+                           Foreground="{StaticResource PrimaryColor}"/>
+                    </Grid>
+
+                    <Button Content="Thanh toán ngay" 
+                    Click="BtnCheckout_Click"
+                    Height="45" Margin="0,20,0,0"
+                    Background="{StaticResource PrimaryColor}"
+                    Foreground="{StaticResource DarkTextColor}"
+                    BorderThickness="0" FontSize="16" FontWeight="Bold"/>
+
+                </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>

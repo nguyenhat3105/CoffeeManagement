@@ -14,5 +14,6 @@ namespace CoffeeManagement.DAL.DAO
         MenuItem? GetMenuItemsById(int id);
         bool DeleteMenuItems(int id);
         void UpdateMenuItems(MenuItem menuItem);
+        IEnumerable<Category> GetAllCategories();
     }
 }

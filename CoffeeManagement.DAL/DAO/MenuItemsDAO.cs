@@ -59,5 +59,9 @@ namespace CoffeeManagement.DAL.DAO
             _context.SaveChanges();
 
         }
+        public IEnumerable<Category> GetAllCategories()
+        {
+            return _context.Categories.ToList();
+        }
     }
 }

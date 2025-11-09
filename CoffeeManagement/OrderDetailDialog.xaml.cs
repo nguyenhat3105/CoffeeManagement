@@ -1,6 +1,8 @@
-﻿using CoffeeManagement.DAL.Models;
+﻿// File: OrderDetailDialog.xaml.cs (ĐÃ SỬA)
+using CoffeeManagement.DAL.Models;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace CoffeeManagement
 {
@@ -10,16 +12,35 @@ namespace CoffeeManagement
         {
             InitializeComponent();
 
-            TxtOrderInfo.Text = $"Chi tiết đơn hàng #{order.Id} - {(order.IsPaid ? "Đã thanh toán" : "Chưa thanh toán")}";
-            OrderItemsList.ItemsSource = order.OrderItems.Select(i => new
+            this.DataContext = order;
+
+            TxtOrderId.Text = $"Chi Tiết Đơn Hàng #{order.Id}";
+            TxtOrderDate.Text = $"Ngày tạo: {order.CreatedAt:dd/MM/yyyy HH:mm}";
+
+            //TxtCustomerName.Text = order.Customer != null ?
+            //    order.Customer.FullName : $"Khách hàng ID: {order.CustomerId}";
+
+            //TxtOrderNote.Text = "Không có ghi chú"; // Giả định
+
+            ItemsList.ItemsSource = order.OrderItems;
+
+            TxtSubTotal.Text = $"{order.TotalAmount:N0}đ";
+            TxtTotalAmount.Text = $"{order.TotalAmount:N0}đ";
+            TxtPaymentMethod.Text = "Tiền mặt / Chuyển khoản";
+
+
+            ItemsList.ItemsSource = order.OrderItems.Select(i => new
             {
                 MenuItem = i.MenuItem,
                 Quantity = i.Quantity,
                 UnitPrice = i.UnitPrice,
                 TotalPrice = i.Quantity * i.UnitPrice
             }).ToList();
+        }
 
-            TxtTotalAmount.Text = $"{order.TotalAmount:C0}";
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

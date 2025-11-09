@@ -22,7 +22,7 @@ public partial class Order
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
-
+    public string? Note { get; set; }
     public virtual User? Customer { get; set; }
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

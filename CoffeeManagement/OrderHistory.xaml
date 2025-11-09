@@ -9,25 +9,19 @@
              Background="Transparent">
 
     <UserControl.Resources>
+        <FontFamily x:Key="FontAwesome">/Fonts/#Font Awesome 6 Free Solid</FontFamily>
+
         <SolidColorBrush x:Key="AccentColor" Color="#D4AF37"/>
         <SolidColorBrush x:Key="AccentForeground" Color="#2A2A2A"/>
-        <SolidColorBrush x:Key="AccentHover" Color="#E6B93F"/>
-        <SolidColorBrush x:Key="PrimaryTextColor" Color="#333"/>
-        <SolidColorBrush x:Key="SecondaryTextColor" Color="#666"/>
+        <SolidColorBrush x:Key="PrimaryTextColor" Color="#1C1C1C"/>
+        <SolidColorBrush x:Key="SecondaryTextColor" Color="#5A5A5A"/>
         <SolidColorBrush x:Key="CardBackground" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="BorderColor" Color="#E0E0E0"/>
-        <SolidColorBrush x:Key="StatusPendingBackground" Color="#FFF8E1"/>
-        <SolidColorBrush x:Key="StatusPendingForeground" Color="#FFA000"/>
-        <SolidColorBrush x:Key="StatusCompletedBackground" Color="#E8F5E9"/>
-        <SolidColorBrush x:Key="StatusCompletedForeground" Color="#388E3C"/>
-        <SolidColorBrush x:Key="StatusCancelledBackground" Color="#FFEBEE"/>
-        <SolidColorBrush x:Key="StatusCancelledForeground" Color="#D32F2F"/>
-        <SolidColorBrush x:Key="StatusDefaultBackground" Color="#ECEFF1"/>
-        <SolidColorBrush x:Key="StatusDefaultForeground" Color="#546E7A"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#E8E8E8"/>
+
 
         <Style x:Key="ViewDetailsButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource AccentColor}"/>
-            <Setter Property="Foreground" Value="{StaticResource AccentForeground}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextColor}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
@@ -42,7 +36,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="{StaticResource AccentHover}"/>
+                                <Setter TargetName="border" Property="Background" Value="#E6B93F"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -50,52 +44,85 @@
             </Setter>
         </Style>
 
-        <Style x:Key="StatusBadgeStyle" TargetType="Label">
-            <Setter Property="Padding" Value="8,4"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="Background" Value="{StaticResource StatusDefaultBackground}"/>
-            <Setter Property="Foreground" Value="{StaticResource StatusDefaultForeground}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Label">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource Self}}" Value="Pending">
-                    <Setter Property="Background" Value="{StaticResource StatusPendingBackground}"/>
-                    <Setter Property="Foreground" Value="{StaticResource StatusPendingForeground}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource Self}}" Value="Completed">
-                    <Setter Property="Background" Value="{StaticResource StatusCompletedBackground}"/>
-                    <Setter Property="Foreground" Value="{StaticResource StatusCompletedForeground}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Content, RelativeSource={RelativeSource Self}}" Value="Cancelled">
-                    <Setter Property="Background" Value="{StaticResource StatusCancelledBackground}"/>
-                    <Setter Property="Foreground" Value="{StaticResource StatusCancelledForeground}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
         <Style x:Key="StatCardStyle" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource CardBackground}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius" Value="8"/>
-            <Setter Property="Padding" Value="15"/>
-            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Padding" Value="18"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
             <Setter Property="Effect">
                 <Setter.Value>
                     <DropShadowEffect ShadowDepth="1" Color="#E0E0E0" Opacity="0.7" BlurRadius="10"/>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <DataTemplate x:Key="MemberRankTemplate">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock x:Name="RankIcon"
+                           Text="🏆"
+                           Foreground="Gold"
+                           FontFamily="{StaticResource FontAwesome}"
+                           FontSize="24"
+                           VerticalAlignment="Center"
+                           Margin="0,0,12,0"/>
+
+                <TextBlock Text="{Binding}"
+                           FontSize="24" FontWeight="Bold"
+                           Foreground="{StaticResource PrimaryTextColor}"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+
+        </DataTemplate>
+
+        <DataTemplate x:Key="OrderItemTemplate">
+            <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
+                    CornerRadius="8" Padding="20"
+                    Margin="0,0,8,12" Background="{StaticResource CardBackground}">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" Color="#E0E0E0" Opacity="0.7" BlurRadius="10"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="📋"
+                               FontFamily="{StaticResource FontAwesome}"
+                               FontSize="22"
+                               Foreground="{StaticResource AccentColor}"
+                               VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding Id, StringFormat='Đơn hàng #{0}'}"
+                                   FontWeight="SemiBold" FontSize="16"
+                                   Foreground="{StaticResource PrimaryTextColor}"/>
+                        <TextBlock Text="{Binding CreatedAt, StringFormat='Ngày: {0:dd/MM/yyyy HH:mm}'}"
+                                   FontSize="12" Foreground="{StaticResource SecondaryTextColor}"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding TotalAmount, StringFormat='{}{0:N0}đ'}"
+                                   FontWeight="Bold" FontSize="18"
+                                   Foreground="{StaticResource PrimaryTextColor}"
+                                   HorizontalAlignment="Right"/>
+                        <Button Content="Xem chi tiết"
+                                Foreground="White"
+                                Height="35"
+                                Width="110"
+                                Click="BtnViewDetails_Click"
+                                Margin="0,8,0,0"
+                                HorizontalAlignment="Right"
+                                Style="{StaticResource ViewDetailsButtonStyle}"/>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+        </DataTemplate>
 
     </UserControl.Resources>
 
@@ -118,108 +145,89 @@
             </Grid.ColumnDefinitions>
 
             <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <ItemsControl x:Name="OrdersList">
+                <ItemsControl x:Name="OrdersList" ItemTemplate="{StaticResource OrderItemTemplate}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="{StaticResource BorderColor}" BorderThickness="1"
-                                    CornerRadius="8" Padding="20"
-                                    Margin="0,0,8,12" Background="{StaticResource CardBackground}">
-                                <Border.Effect>
-                                    <DropShadowEffect ShadowDepth="1" Color="#E0E0E0" Opacity="0.7" BlurRadius="10"/>
-                                </Border.Effect>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid Grid.Row="0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding Id, StringFormat='Order #{0}'}"
-                                                   FontWeight="SemiBold" FontSize="16"
-                                                   Foreground="{StaticResource PrimaryTextColor}"
-                                                   VerticalAlignment="Center"/>
-                                        <TextBlock Text="{Binding CreatedAt, StringFormat='Ngày tạo: {0:dd/MM/yyyy HH:mm}'}"
-                                                   Grid.Column="1"
-                                                   FontSize="12" Foreground="{StaticResource SecondaryTextColor}"
-                                                   VerticalAlignment="Center"/>
-                                    </Grid>
-                                    <Grid Grid.Row="1" Margin="0,12,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                    
-                                        <TextBlock Grid.Column="1"
-                                                   Text="{Binding TotalAmount, StringFormat='{}{0:N0}đ'}"
-                                                   FontWeight="Bold" FontSize="18"
-                                                   Foreground="{StaticResource AccentColor}"
-                                                   VerticalAlignment="Center"/>
-                                    </Grid>
-                                    <Button Grid.Row="2"
-                                            Content="Xem chi tiết"
-                                            Click="BtnViewDetails_Click"
-                                            HorizontalAlignment="Right"
-                                            Margin="0,15,0,0"
-                                            Style="{StaticResource ViewDetailsButtonStyle}"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
 
-            <StackPanel Grid.Column="1" Margin="20,0,0,0">
+            <StackPanel Grid.Column="1" Margin="25,0,0,0">
 
-                <TextBlock Text="📊 Thống kê của bạn"
+                <TextBlock Text="✨ Thông tin và Ưu đãi"
                            FontSize="20" FontWeight="SemiBold"
                            Foreground="{StaticResource PrimaryTextColor}"
                            Margin="0,0,0,15"/>
 
                 <Border Style="{StaticResource StatCardStyle}">
                     <StackPanel>
-                        <TextBlock Text="TỔNG CHI TIÊU"
-                                   FontSize="12" FontWeight="Bold"
+                        <TextBlock Text="HẠNG THÀNH VIÊN"
+                                   FontSize="12" FontWeight="SemiBold"
                                    Foreground="{StaticResource SecondaryTextColor}"
                                    Margin="0,0,0,5"/>
-                        <TextBlock x:Name="TxtTotalSpent"
-                                   Text="0đ"
-                                   FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource AccentColor}"/>
+                        <ContentControl x:Name="MemberRankControl" ContentTemplate="{StaticResource MemberRankTemplate}"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource StatCardStyle}">
+                    <StackPanel>
+                        <TextBlock Text="TỔNG CHI TIÊU"
+                                   FontSize="12" FontWeight="SemiBold"
+                                   Foreground="{StaticResource SecondaryTextColor}"
+                                   Margin="0,0,0,5"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="💸"
+                                       FontFamily="{StaticResource FontAwesome}"
+                                       FontSize="24"
+                                       Foreground="Green"
+                                       VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <TextBlock x:Name="TxtTotalSpent"
+                                       Text="0đ"
+                                       FontSize="24" FontWeight="Bold"
+                                       Foreground="{StaticResource PrimaryTextColor}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
                 <Border Style="{StaticResource StatCardStyle}">
                     <StackPanel>
                         <TextBlock Text="TỔNG SỐ ĐƠN HÀNG"
-                                   FontSize="12" FontWeight="Bold"
+                                   FontSize="12" FontWeight="SemiBold"
                                    Foreground="{StaticResource SecondaryTextColor}"
                                    Margin="0,0,0,5"/>
-                        <TextBlock x:Name="TxtTotalOrders"
-                                   Text="0"
-                                   FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource PrimaryTextColor}"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="📦"
+                                       FontFamily="{StaticResource FontAwesome}"
+                                       FontSize="24"
+                                       Foreground="Blue"
+                                       VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <TextBlock x:Name="TxtTotalOrders"
+                                       Text="0"
+                                       FontSize="24" FontWeight="Bold"
+                                       Foreground="{StaticResource PrimaryTextColor}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 
                 <Border Style="{StaticResource StatCardStyle}">
                     <StackPanel>
                         <TextBlock Text="MÓN YÊU THÍCH"
-                                   FontSize="12" FontWeight="Bold"
+                                   FontSize="12" FontWeight="SemiBold"
                                    Foreground="{StaticResource SecondaryTextColor}"
                                    Margin="0,0,0,5"/>
-                        <TextBlock x:Name="TxtFavoriteItem"
-                                   Text="Chưa có"
-                                   FontSize="24" FontWeight="Bold"
-                                   Foreground="{StaticResource PrimaryTextColor}"/>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="💖"
+                                       FontFamily="{StaticResource FontAwesome}"
+                                       FontSize="24"
+                                       Foreground="Red"
+                                       VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <TextBlock x:Name="TxtFavoriteItem"
+                                       Text="Chưa có"
+                                       FontSize="24" FontWeight="Bold"
+                                       Foreground="{StaticResource PrimaryTextColor}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
 

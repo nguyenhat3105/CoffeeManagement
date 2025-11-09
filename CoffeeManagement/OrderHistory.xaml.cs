@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CoffeeManagement
 {
@@ -37,9 +38,10 @@ namespace CoffeeManagement
                 return;
             }
 
+            // Code MỚI đã sửa
             _orders = _orderService
                 .GetAllOrders()
-                .Where(o => o.CustomerId == customer.Id)
+                .Where(o => o.CustomerId == customer.Id && o.Status != 4) // 4 = Cancelled/Rejected
                 .OrderByDescending(o => o.CreatedAt)
                 .ToList();
 
@@ -62,6 +64,30 @@ namespace CoffeeManagement
                 .FirstOrDefault();
 
             TxtFavoriteItem.Text = favoriteItem?.Name ?? "Chưa có";
+
+            if (MemberRankControl != null)
+            {
+                MemberRankControl.Content = DetermineMemberRank(totalSpent);
+            }
+        }
+
+        private string DetermineMemberRank(decimal totalSpent)
+        {
+            long spent = (long)totalSpent;
+
+            if (spent >= 1000000)
+            {
+                return "Thành viên Kim Cương";
+            }
+            else if (spent >= 500000)
+            {
+                return "Thành viên Vàng";
+            }
+            else if (spent >= 200000)
+            {
+                return "Thành viên Bạc";
+            }
+            return "Thành viên Đồng";
         }
 
 
