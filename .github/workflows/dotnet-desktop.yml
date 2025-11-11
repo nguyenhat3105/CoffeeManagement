@@ -51,13 +51,15 @@ jobs:
 
     # (Tùy chọn) – chỉ cần nếu bạn muốn đóng gói MSIX có chữ ký
     - name: Decode certificate
-      if: secrets.Base64_Encoded_Pfx != ''
+      # *** ĐÃ SỬA LỖI Ở DÒNG NÀY ***
+      if: ${{ secrets.Base64_Encoded_Pfx != '' }}
       run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
         $certificatePath = Join-Path -Path $env:Wap_Project_Directory -ChildPath GitHubActionsWorkflow.pfx
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
 
     - name: Package MSIX (WAP project)
+      # (Lưu ý: Dòng này sẽ thất bại nếu bạn không cung cấp 2 secrets bên dưới)
       run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
       env:
         Configuration: ${{ matrix.configuration }}
