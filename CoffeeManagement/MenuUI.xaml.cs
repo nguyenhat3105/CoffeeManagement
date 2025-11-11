@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media; // <-- THÊM USING NÀY
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CoffeeManagement
@@ -20,13 +20,14 @@ namespace CoffeeManagement
     {
         private readonly MenuItemsService _menuService;
         private readonly OrderService _orderService;
-        private readonly UserService _userService; // <-- THÊM USER SERVICE
+        private readonly UserService _userService;
+        private readonly PromotionService _promotionService;
 
         private List<DAL.Models.MenuItem> _allMenuItems = new List<DAL.Models.MenuItem>();
         private List<Category> _allCategories = new List<Category>();
 
-        // Biến để lưu khách hàng do nhân viên chọn
-        private User _selectedCustomer = null; // <-- THÊM BIẾN NÀY
+        private User _selectedCustomer = null;
+        private Promotion _appliedPromotion = null;
 
         public ObservableCollection<CartItem> CartItems { get; set; } = new ObservableCollection<CartItem>();
 
@@ -41,8 +42,9 @@ namespace CoffeeManagement
             _menuService = new MenuItemsService(new MenuItemsRepository(new MenuItemsDAO(ctx)));
             _orderService = new OrderService(new OrderRepository(new OrderDAO(ctx)));
 
-            // Khởi tạo UserService
-            _userService = new UserService(new UserRepository(new UserDao(ctx))); // <-- THÊM DÒNG NÀY
+            // *** SỬA LỖI COMMENT (Code của bạn đã đúng) ***
+            _promotionService = new PromotionService(new PromotionRepository(new PromotionDAO(ctx))); // Khởi tạo PromotionService
+            _userService = new UserService(new UserRepository(new UserDao(ctx)));
 
             // Gán DataContext và sources
             this.DataContext = this;
@@ -55,36 +57,29 @@ namespace CoffeeManagement
             };
 
             LoadInitialData();
-
-            // Kiểm tra vai trò (Role) sau khi tải dữ liệu
-            CheckUserRole(); // <-- THÊM DÒNG NÀY
+            CheckUserRole();
         }
 
         // =============================================
-        // HÀM MỚI: KIỂM TRA QUYỀN HẠN
+        // HÀM KIỂM TRA QUYỀN HẠN
         // =============================================
-        /// <summary>
-        /// Hiển thị/ẩn panel tìm kiếm khách hàng dựa trên vai trò của người đăng nhập
-        /// </summary>
         private void CheckUserRole()
         {
-            // RoleId 2 = Staff (dựa trên script DB của bạn)
-            if (AppSession.CurrentUser != null && AppSession.CurrentUser.RoleId == 2) //
+            // RoleId 2 = Staff
+            if (AppSession.CurrentUser != null && AppSession.CurrentUser.RoleId == 2)
             {
-                // Nếu là Staff, hiện panel tìm kiếm
                 StaffCustomerSearchPanel.Visibility = Visibility.Visible;
                 TxtSelectedCustomerInfo.Text = "Đang chọn: Khách lẻ (Vãng lai)";
                 TxtSelectedCustomerInfo.Foreground = Brushes.Gray;
             }
             else
             {
-                // Nếu là Customer hoặc không đăng nhập, ẩn panel
                 StaffCustomerSearchPanel.Visibility = Visibility.Collapsed;
             }
         }
 
         // =============================================
-        // HÀM MỚI: XỬ LÝ NÚT TÌM KHÁCH HÀNG
+        // HÀM TÌM KHÁCH HÀNG
         // =============================================
         private void BtnFindCustomer_Click(object sender, RoutedEventArgs e)
         {
@@ -99,7 +94,6 @@ namespace CoffeeManagement
 
             try
             {
-                // Tạm thời, chúng ta dùng GetByUsername để kiểm tra
                 var foundUser = _userService.GetByUsername(query);
 
                 if (foundUser != null && foundUser.RoleId == 3) // Role 3 là Customer
@@ -124,7 +118,9 @@ namespace CoffeeManagement
             }
         }
 
-
+        // =============================================
+        // HÀM TẢI DỮ LIỆU
+        // =============================================
         private void LoadInitialData()
         {
             try
@@ -140,6 +136,9 @@ namespace CoffeeManagement
             }
         }
 
+        // =============================================
+        // HÀM TẠO BỘ LỌC RADIOBUTTON (Khớp với XAML)
+        // =============================================
         private void PopulateCategoryFilter()
         {
             CategoryFilterPanel.Children.Clear();
@@ -169,6 +168,9 @@ namespace CoffeeManagement
             }
         }
 
+        // =============================================
+        // HÀM LỌC
+        // =============================================
         private void ApplyFilters()
         {
             var filteredList = _allMenuItems
@@ -181,6 +183,9 @@ namespace CoffeeManagement
             MenuItemsControl.ItemsSource = filteredList;
         }
 
+        // =============================================
+        // HÀM SỰ KIỆN CHO BỘ LỌC (Khớp với XAML)
+        // =============================================
         private void CategoryFilter_Click(object sender, RoutedEventArgs e)
         {
             if (sender is RadioButton rb && rb.Tag is int categoryId)
@@ -195,6 +200,12 @@ namespace CoffeeManagement
             _searchQuery = TxtSearch.Text ?? "";
             ApplyFilters();
         }
+
+        // =============================================
+        // CÁC HÀM CÒN LẠI (GIỎ HÀNG, THANH TOÁN, v.v.)
+        // =============================================
+
+        #region Các hàm Giỏ hàng, Thanh toán, Xử lý ảnh (Giữ nguyên)
 
         private void BtnAddItem_Click(object sender, RoutedEventArgs e)
         {
@@ -275,14 +286,31 @@ namespace CoffeeManagement
 
         private void UpdateCartTotal()
         {
-            decimal total = CartItems.Sum(item => item.Quantity * (item.Item?.Price ?? 0));
+            decimal subtotal = CartItems.Sum(item => item.Quantity * (item.Item?.Price ?? 0));
+            decimal discountAmount = 0;
+
+            if (_appliedPromotion != null)
+            {
+                if (_appliedPromotion.DiscountType == 1) // percent
+                {
+                    discountAmount = subtotal * (_appliedPromotion.DiscountValue / 100m);
+                    if (_appliedPromotion.MaxDiscountAmount.HasValue && discountAmount > _appliedPromotion.MaxDiscountAmount.Value)
+                        discountAmount = _appliedPromotion.MaxDiscountAmount.Value;
+                }
+                else if (_appliedPromotion.DiscountType == 2) // fixed
+                {
+                    discountAmount = _appliedPromotion.DiscountValue;
+                }
+                if (discountAmount > subtotal) discountAmount = subtotal;
+            }
+
+            decimal total = subtotal - discountAmount;
+
+            TxtCartSubtotal.Text = $"{subtotal:N0}đ";
+            TxtCartDiscount.Text = discountAmount > 0 ? $"-{discountAmount:N0}đ" : "0đ";
             TxtCartTotal.Text = $"{total:N0}đ";
         }
 
-
-        // =============================================
-        // HÀM CHECKOUT ĐÃ ĐƯỢC CẬP NHẬT HOÀN TOÀN
-        // =============================================
         private void BtnCheckout_Click(object sender, RoutedEventArgs e)
         {
             if (!CartItems.Any())
@@ -291,43 +319,61 @@ namespace CoffeeManagement
                 return;
             }
 
-            // --- Logic phân quyền Staff/Customer ---
             int? customerIdForOrder = null;
             int? staffIdForOrder = null;
-            bool isStaffOrdering = (AppSession.CurrentUser != null && AppSession.CurrentUser.RoleId == 2); //
+            bool isStaffOrdering = (AppSession.CurrentUser != null && AppSession.CurrentUser.RoleId == 2);
 
             if (isStaffOrdering)
             {
-                // 1. NGƯỜI DÙNG LÀ NHÂN VIÊN
-                staffIdForOrder = AppSession.CurrentUser.Id; // Nhân viên chính là người đang đăng nhập
-                customerIdForOrder = _selectedCustomer?.Id; // Khách hàng là người được chọn (hoặc null nếu là khách lẻ)
+                staffIdForOrder = AppSession.CurrentUser.Id;
+                customerIdForOrder = _selectedCustomer?.Id;
             }
-            else if (AppSession.CurrentUser != null && AppSession.CurrentUser.RoleId == 3 || AppSession.CurrentUser != null && AppSession.CurrentUser.RoleId == 1)
+            else if (AppSession.CurrentUser != null)
             {
-                // 2. NGƯỜI DÙNG LÀ KHÁCH HÀNG (Tự order)
                 staffIdForOrder = null;
-                customerIdForOrder = AppSession.CurrentUser.Id; // Khách hàng là chính họ
+                customerIdForOrder = AppSession.CurrentUser.Id;
             }
             else
             {
-                // 3. KHÁCH LẺ TỰ ORDER (Không đăng nhập)
                 MessageBox.Show("Vui lòng đăng nhập để hoàn tất đơn hàng.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            // --- Kết thúc logic phân quyền ---
 
+            decimal subtotal = CartItems.Sum(i => i.Quantity * (i.Item?.Price ?? 0));
+            decimal discountAmount = 0;
+            int? promotionId = null;
 
-            // 1. Tạo đối tượng Order
+            if (_appliedPromotion != null)
+            {
+                if (_appliedPromotion.DiscountType == 1)
+                {
+                    discountAmount = subtotal * (_appliedPromotion.DiscountValue / 100);
+                    if (_appliedPromotion.MaxDiscountAmount.HasValue && discountAmount > _appliedPromotion.MaxDiscountAmount.Value)
+                    {
+                        discountAmount = _appliedPromotion.MaxDiscountAmount.Value;
+                    }
+                }
+                else if (_appliedPromotion.DiscountType == 2)
+                {
+                    discountAmount = _appliedPromotion.DiscountValue;
+                }
+                if (discountAmount > subtotal) discountAmount = subtotal;
+
+                promotionId = _appliedPromotion.Id;
+            }
+
             var newOrder = new Order
             {
-                CustomerId = customerIdForOrder, // Đã gán theo logic phân quyền
-                StaffId = staffIdForOrder = AppSession.CurrentUser.Id,     // Đã gán theo logic phân quyền
+                CustomerId = customerIdForOrder,
+                StaffId = staffIdForOrder,
                 CreatedAt = DateTime.Now,
-                //PaidAt = DateTime.Now, // Xóa dòng này, vì chưa thanh toán
                 Status = 0, // 0 = Pending
                 IsPaid = false,
                 Note = TxtOrderNote.Text.Trim(),
-                TotalAmount = CartItems.Sum(i => i.Quantity * (i.Item?.Price ?? 0)),
+                Subtotal = subtotal,
+                DiscountAmount = discountAmount,
+                TotalAmount = subtotal - discountAmount,
+                PromotionId = promotionId,
 
                 OrderItems = CartItems.Select(ci => new OrderItem
                 {
@@ -337,17 +383,23 @@ namespace CoffeeManagement
                 }).ToList()
             };
 
-            // 2. Lưu Order vào Database
             try
             {
-                _orderService.CreateOrder(newOrder, newOrder.OrderItems.ToList()); //
+                _orderService.CreateOrder(newOrder, newOrder.OrderItems.ToList());
 
-                // 3. Thông báo và xóa giỏ hàng
+                if (_appliedPromotion != null)
+                {
+                    _promotionService.IncrementUsage(_appliedPromotion.Id);
+                }
+
                 MessageBox.Show($"Đặt hàng thành công! Đơn hàng của bạn đang được xử lý.", "Thành công", MessageBoxButton.OK, MessageBoxImage.Information);
                 CartItems.Clear();
-                TxtOrderNote.Text = string.Empty; // Xóa ghi chú
+                TxtOrderNote.Text = string.Empty;
 
-                // Reset luôn phần tìm kiếm khách hàng (nếu là staff)
+                _appliedPromotion = null;
+                TxtVoucherCode.Text = string.Empty;
+                TxtVoucherInfo.Text = string.Empty;
+
                 if (isStaffOrdering)
                 {
                     _selectedCustomer = null;
@@ -361,7 +413,6 @@ namespace CoffeeManagement
             }
             catch (Exception ex)
             {
-                // Hiển thị thông tin lỗi đầy đủ cho debug
                 var full = new System.Text.StringBuilder();
                 Exception? cur = ex;
                 while (cur != null)
@@ -375,10 +426,39 @@ namespace CoffeeManagement
                 System.Diagnostics.Debug.WriteLine("[Order Error] " + full.ToString());
                 MessageBox.Show($"Có lỗi xảy ra khi đặt hàng:\n{ex.Message}\n\n(Check Output window for stack trace)", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
 
-        // Hàm xử lý ảnh (giữ nguyên)
+        private void BtnApplyVoucher_Click(object sender, RoutedEventArgs e)
+        {
+            string code = TxtVoucherCode.Text.Trim();
+            if (string.IsNullOrEmpty(code))
+            {
+                _appliedPromotion = null;
+                TxtVoucherInfo.Text = "";
+                UpdateCartTotal();
+                return;
+            }
+
+            decimal currentSubtotal = CartItems.Sum(item => item.Quantity * (item.Item?.Price ?? 0));
+
+            var promo = _promotionService.GetValidPromotionByCode(code, currentSubtotal);
+
+            if (promo == null)
+            {
+                _appliedPromotion = null;
+                TxtVoucherInfo.Text = "Mã không hợp lệ hoặc không đủ điều kiện.";
+                TxtVoucherInfo.Foreground = Brushes.Red;
+            }
+            else
+            {
+                _appliedPromotion = promo;
+                TxtVoucherInfo.Text = $"Áp dụng thành công: {promo.Description}";
+                TxtVoucherInfo.Foreground = Brushes.Green;
+            }
+
+            UpdateCartTotal(); // Tính toán lại tổng tiền
+        }
+
         private void MenuItemImage_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is not Image img) return;
@@ -511,5 +591,7 @@ namespace CoffeeManagement
 
             SetFallback();
         }
+
+        #endregion
     }
 }

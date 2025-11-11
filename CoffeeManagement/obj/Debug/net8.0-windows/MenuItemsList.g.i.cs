@@ -84,7 +84,7 @@ namespace CoffeeManagement {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/CoffeeManagement;V1.0.0.0;component/menuitemslist.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CoffeeManagement;component/menuitemslist.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\MenuItemsList.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

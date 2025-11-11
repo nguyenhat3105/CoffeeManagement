@@ -1,4 +1,5 @@
-﻿using CoffeeManagement.DAL.Models; // for Role enum
+﻿using CoffeeManagement.BLL.Services;
+using CoffeeManagement.DAL.Models; // for Role enum
 using CoffeeManagement.Helpers;    // for AppSession
 using System.Windows;
 using System.Windows.Controls;
@@ -9,11 +10,13 @@ namespace CoffeeManagement
 {
     public partial class MainWindow : Window
     {
+        private readonly IAuthorizationService _auth;
         public MainWindow()
         {
             InitializeComponent();
+            _auth = new AuthorizationService();
             SetupByRole();
-            LoadControl("Menu"); // default view
+            LoadControl("MenuUI"); // default view
         }
 
         private void SetupByRole()
@@ -21,27 +24,30 @@ namespace CoffeeManagement
             var user = AppSession.CurrentUser;
             TxtWelcome.Text = user != null ? $"Welcome, {user.FirstName} {user.LastName} ({user.Username})" : "Welcome";
 
-            // default visibility
-            BtnUsers.Visibility = Visibility.Collapsed;
-            BtnMenu.Visibility = Visibility.Visible;
-            BtnOrders.Visibility = Visibility.Visible;
 
             if (user != null)
             {
                 if (user.RoleId == 1)
                 {
-                    BtnUsers.Visibility = Visibility.Visible;
+ 
                 }
                 else if (user.RoleId == 2)
                 {
                     // staff: can see menu & orders
-                    BtnUsers.Visibility = Visibility.Collapsed;
+                    BtnMenu.Visibility = Visibility.Collapsed;
+                    BtnAdminDashboard.Visibility = Visibility.Collapsed;
+                    BtnOrderHistory.Visibility = Visibility.Collapsed;
+
                 }
                 else if (user.RoleId == 3)
                 {
                     // customer: maybe only menu (or profile) — hide orders & users
                     BtnOrders.Visibility = Visibility.Collapsed;
                     BtnUsers.Visibility = Visibility.Collapsed;
+                    BtnMenu.Visibility = Visibility.Collapsed;
+                    BtnAdminDashboard.Visibility = Visibility.Collapsed;
+                    BtnPromotion.Visibility = Visibility.Collapsed;
+                    BtnAdminOrders.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -60,6 +66,7 @@ namespace CoffeeManagement
                     case "BtnProfile": LoadControl("Profile"); break;
                     case "BtnMenuUI": LoadControl("MenuUI"); break;
                     case "BtnOrderHistory": LoadControl("OrderHistory"); break;
+                    case "BtnPromotion": LoadControl("Promotion"); break;
                 }
             }
         }
@@ -79,6 +86,7 @@ namespace CoffeeManagement
                 case "AdminDashboard": uc = new AdminDashboardView(); break;
                 case "Profile": uc = new UserProfile(); break;
                 case "OrderHistory": uc = new OrderHistory(); break;
+                case "Promotion": uc = new AdminPromotionsView(); break;
                 default: uc = new UsersListControl(); break;
             }
 

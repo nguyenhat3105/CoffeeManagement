@@ -301,26 +301,7 @@
                     <Border BorderBrush="{StaticResource HeaderSeparatorColor}" BorderThickness="0,0,0,1" Margin="0,15"/>
 
                     <!-- PHƯƠNG THỨC THANH TOÁN -->
-                    <Grid Margin="0,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Style="{StaticResource SummaryLabelStyle}" Text="Phương thức:"/>
-                        <TextBlock Grid.Column="1" x:Name="TxtPaymentMethod" Style="{StaticResource SummaryValueStyle}" Text="Tiền mặt"/>
-                    </Grid>
-
-                    <!-- TỔNG SỐ TIỀN PHẢI TRẢ (Highlight) -->
-                    <Border Background="#F9F9F9" Padding="10" CornerRadius="5" Margin="0,15,0,0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="TỔNG THANH TOÁN" FontWeight="ExtraBold" FontSize="20" Foreground="{StaticResource AccentColor}"/>
-                            <TextBlock Grid.Column="1" x:Name="TxtTotalAmount" Text="0đ" FontWeight="ExtraBold" FontSize="20" Foreground="{StaticResource AccentColor}"/>
-                        </Grid>
-                    </Border>
+                    
 
                 </StackPanel>
             </Grid>

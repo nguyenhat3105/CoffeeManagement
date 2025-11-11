@@ -334,7 +334,6 @@ C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\MenuItemDialog.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\MenuItemsList.baml
-C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\MenuUI.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\OrderDetailDialog.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\UserDialog.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\UserProfile.baml
@@ -360,6 +359,7 @@ C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\CoffeeManagement_MarkupCompile.lref
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\AdminAllOrdersView.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\LoginWindow.baml
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\MenuUI.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\OrderHistory.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\StaffOrders.baml
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\CoffeeManagement.g.resources
@@ -374,3 +374,10 @@ C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\CoffeeManagement.pdb
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\CoffeeManagement.genruntimeconfig.cache
 C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\ref\CoffeeManagement.dll
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\AdminPromotionsView.g.cs
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\AdminPromotionsView.baml
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\PromotionEditDialog.g.cs
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\PromotionEditDialog.baml
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\bin\Debug\net8.0-windows\images\banner.jpg
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\obj\Debug\net8.0-windows\CoffeeManagement_Content.g.cs
+C:\Users\CONG NHAT\Downloads\CoffeeManagement\CoffeeManagement\bin\Debug\net8.0-windows\Helpers\AppSession.cs

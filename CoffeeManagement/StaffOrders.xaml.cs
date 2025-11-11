@@ -43,7 +43,7 @@ namespace CoffeeManagement
 
         private void LoadProcessingOrders()
         {
-            _orders = _orderService.GetAllOrders().Where(o => o.Status == 0).ToList();
+            _orders = _orderService.GetAllOrders().Where(o => o.Status == 0).OrderBy(order => order.Id).ToList();
             OrdersItemsControl.ItemsSource = _orders;
         }
 

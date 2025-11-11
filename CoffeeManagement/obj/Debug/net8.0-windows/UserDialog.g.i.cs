@@ -108,7 +108,7 @@ namespace CoffeeManagement {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/CoffeeManagement;V1.0.0.0;component/userdialog.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CoffeeManagement;component/userdialog.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\UserDialog.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

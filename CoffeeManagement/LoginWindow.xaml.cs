@@ -30,7 +30,7 @@ namespace CoffeeManagement
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
             String email = TxtEmail.Text.Trim();
-            String password = TxtPassword.Text.Trim();
+            String password = TxtPassword.Password.Trim();
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ Email và Mật khẩu!", "Thiếu thông tin", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -77,5 +77,6 @@ namespace CoffeeManagement
         {
             Application.Current.Shutdown(); // Đóng toàn bộ ứng dụng
         }
+
     }
 }

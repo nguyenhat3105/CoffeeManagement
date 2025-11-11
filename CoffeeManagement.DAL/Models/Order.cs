@@ -23,6 +23,12 @@ public partial class Order
 
     public DateTime? UpdatedAt { get; set; }
     public string? Note { get; set; }
+
+    public decimal Subtotal { get; set; }
+    public decimal DiscountAmount { get; set; }
+    public int? PromotionId { get; set; }
+    public virtual Promotion? Promotion { get; set; }
+
     public virtual User? Customer { get; set; }
 
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();

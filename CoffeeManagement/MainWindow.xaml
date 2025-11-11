@@ -4,6 +4,7 @@
         Title="Coffee Management" Height="720" Width="1280" 
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" 
+        WindowState="Maximized"
         AllowsTransparency="True" 
         ResizeMode="CanResizeWithGrip"
         Background="Transparent">
@@ -196,6 +197,13 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE8F3;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,12,0" FontSize="16"/>
                         <TextBlock Text="Order History" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                
+                <Button x:Name="BtnPromotion" Style="{StaticResource NavigationButtonStyle}" Click="Nav_Click">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8F3;" FontFamily="Segoe MDL2 Assets" VerticalAlignment="Center" Margin="0,0,12,0" FontSize="16"/>
+                        <TextBlock Text="Promotion" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 

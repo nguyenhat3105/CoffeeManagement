@@ -27,6 +27,8 @@ public partial class CoffeeManagementDbContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<Promotion> Promotions { get; set; }
+
 
     private string GetConnectionString()
     {
@@ -98,6 +100,13 @@ public partial class CoffeeManagementDbContext : DbContext
             entity.HasOne(d => d.Staff).WithMany(p => p.OrderStaffs)
                 .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("FK_Orders_Staff");
+            entity.Property(e => e.Subtotal).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.DiscountAmount).HasColumnType("decimal(18, 2)");
+
+            entity.HasOne(d => d.Promotion).WithMany(p => p.Orders)
+                .HasForeignKey(d => d.PromotionId)
+                .OnDelete(DeleteBehavior.SetNull) // Quan trọng
+                .HasConstraintName("FK_Orders_Promotions");
         });
 
         modelBuilder.Entity<OrderItem>(entity =>
@@ -148,6 +157,17 @@ public partial class CoffeeManagementDbContext : DbContext
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Users_Role");
+        });
+
+        modelBuilder.Entity<Promotion>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.Code, "UX_Promotions_Code").IsUnique();
+            entity.Property(e => e.Code).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.DiscountValue).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.MinPurchaseAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.MaxDiscountAmount).HasColumnType("decimal(18, 2)");
         });
 
         OnModelCreatingPartial(modelBuilder);

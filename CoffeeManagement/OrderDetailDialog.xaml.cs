@@ -25,8 +25,7 @@ namespace CoffeeManagement
             ItemsList.ItemsSource = order.OrderItems;
 
             TxtSubTotal.Text = $"{order.TotalAmount:N0}đ";
-            TxtTotalAmount.Text = $"{order.TotalAmount:N0}đ";
-            TxtPaymentMethod.Text = "Tiền mặt / Chuyển khoản";
+
 
 
             ItemsList.ItemsSource = order.OrderItems.Select(i => new

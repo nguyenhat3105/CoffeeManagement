@@ -32,6 +32,9 @@ namespace CoffeeManagement.DAL.DAO
                         Status = order.Status,
                         IsPaid = order.IsPaid,
                         Note = order.Note,
+                        Subtotal = order.Subtotal,
+                        DiscountAmount = order.DiscountAmount,
+                        PromotionId = order.PromotionId,
                         TotalAmount = order.TotalAmount,
                         OrderItems = new List<OrderItem>()
                     };

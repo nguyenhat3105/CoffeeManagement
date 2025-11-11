@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CoffeeManagement.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+80938f052fcf7dcec1e66fad9248a3b0f563ee0c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ad8cc2656037a599287b9fbd306455c6acd0b373")]
 [assembly: System.Reflection.AssemblyProductAttribute("CoffeeManagement.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CoffeeManagement.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

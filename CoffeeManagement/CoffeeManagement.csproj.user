@@ -8,6 +8,9 @@
     <Compile Update="AdminDashboardView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="AdminPromotionsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="CartDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,6 +30,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="OrderHistory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="PromotionEditDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="StaffOrders.xaml.cs">
