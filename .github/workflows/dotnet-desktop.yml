@@ -1,0 +1,69 @@
+name: Build & Package WPF App (.NET 8)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        configuration: [Release]
+
+    env:
+      Solution_Name: CoffeeManagement.sln
+      Test_Project_Path: CoffeeManagement.Tests\CoffeeManagement.Tests.csproj
+      Wap_Project_Directory: CoffeeManagement.Package
+      Wap_Project_Path: CoffeeManagement.Package\CoffeeManagement.Package.wapproj
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET 8 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Restore dependencies
+      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Build solution
+      run: msbuild $env:Solution_Name /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Run unit tests
+      run: dotnet test $env:Test_Project_Path --configuration $env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    # (Tùy chọn) – chỉ cần nếu bạn muốn đóng gói MSIX có chữ ký
+    - name: Decode certificate
+      if: secrets.Base64_Encoded_Pfx != ''
+      run: |
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.Base64_Encoded_Pfx }}")
+        $certificatePath = Join-Path -Path $env:Wap_Project_Directory -ChildPath GitHubActionsWorkflow.pfx
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+
+    - name: Package MSIX (WAP project)
+      run: msbuild $env:Wap_Project_Path /p:Configuration=$env:Configuration /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload /p:PackageCertificateKeyFile=GitHubActionsWorkflow.pfx /p:PackageCertificatePassword=${{ secrets.Pfx_Key }}
+      env:
+        Configuration: ${{ matrix.configuration }}
+
+    - name: Upload artifacts (MSIX package)
+      uses: actions/upload-artifact@v4
+      with:
+        name: WPF-App-Package
+        path: ${{ env.Wap_Project_Directory }}\AppPackages
